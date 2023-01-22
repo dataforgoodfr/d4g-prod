@@ -1,0 +1,58 @@
+---
+installCRDs: false
+
+host: deployment.d4g.tinker.ovh
+
+global:
+  image:
+    tag: v2.5.7
+
+server:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+      ingress.kubernetes.io/ssl-redirect: "true"
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      external-dns.alpha.kubernetes.io/hostname: deployment.d4g.tinker.ovh
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        # CIS Nginx Configuration 5.3 - Browser security headers
+        add_header Content-Security-Policy "default-src 'none'; script-src 'self';connect-src 'self';img-src 'self' data:; font-src 'self' fonts.gstatic.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com;base-uri 'self';form-action 'self'; manifest-src 'self'";
+
+        add_header X-Frame-Options "SAMEORIGIN";
+        add_header X-Content-Type-Options "nosniff";
+        add_header X-Xss-Protection "1; mode=block";
+        add_header Referrer-Policy "no-referrer";
+    hosts:
+      - deployment.d4g.tinker.ovh
+    paths:
+      - /
+    tls:
+      - hosts:
+          - deployment.d4g.tinker.ovh
+        secretName: argocd-secret # do not change, this is provided by Argo CD
+
+  config:
+    url: https://deployment.d4g.tinker.ovh
+    accounts.admin.enabled: "true"
+
+  rbacConfig:
+    policy.csv: |
+      # Role definition : these users are admin
+
+    # default policy for people logging in --> no rights at all, they are blind and have no rights
+    policy.default: ""
+    scopes: "[email, group]"
+
+redis:
+  containerSecurityContext:
+    runAsNonRoot: true
+    readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+        - ALL
+  resources:
+    limits:
+      cpu: 100m
+      memory: 50Mi
