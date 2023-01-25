@@ -4,20 +4,20 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  name: hello-ingress
+  name: theway-ingress
 spec:
   rules:
-    - host: hello.d4g.tinker.ovh
+    - host: theway.d4g.tinker.ovh
       http:
         paths:
           - backend:
               service:
-                name: hello-service
+                name: theway-service
                 port:
                   number: 80
             path: /
             pathType: Prefix
   tls:
     - hosts:
-        - hello.d4g.tinker.ovh
-      secretName: hello-vanir
+        - theway.d4g.tinker.ovh
+      secretName: theway-d4g
