@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: theway
-          image: pauulog/theway:latest
+          image: ghcr.io/quickpipes/theway:latest
           ports:
             - containerPort: 8080
           resources:
