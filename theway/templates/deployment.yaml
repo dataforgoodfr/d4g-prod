@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: theway-deployment
+  labels:
+    app: theway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: theway
+  template:
+    metadata:
+      labels:
+        app: theway
+    spec:
+      containers:
+        - name: theway
+          image: pauulog/theway:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: 32M
+              cpu: 150m
+            limits:
+              memory: 32M
+              cpu: 150m
