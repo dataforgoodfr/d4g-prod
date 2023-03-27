@@ -1,7 +1,7 @@
 ---
 installCRDs: false
 
-host: deployment.d4g.tinker.ovh
+host: deployment.services.dataforgood.fr
 
 global:
   image:
@@ -14,7 +14,7 @@ server:
       kubernetes.io/ingress.class: "nginx"
       ingress.kubernetes.io/ssl-redirect: "true"
       cert-manager.io/cluster-issuer: letsencrypt-prod
-      external-dns.alpha.kubernetes.io/hostname: deployment.d4g.tinker.ovh
+      external-dns.alpha.kubernetes.io/hostname: deployment.services.dataforgood.fr
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
       nginx.ingress.kubernetes.io/configuration-snippet: |
         # CIS Nginx Configuration 5.3 - Browser security headers
@@ -25,16 +25,16 @@ server:
         add_header X-Xss-Protection "1; mode=block";
         add_header Referrer-Policy "no-referrer";
     hosts:
-      - deployment.d4g.tinker.ovh
+      - deployment.services.dataforgood.fr
     paths:
       - /
     tls:
       - hosts:
-          - deployment.d4g.tinker.ovh
+          - deployment.services.dataforgood.fr
         secretName: argocd-secret # do not change, this is provided by Argo CD
 
   config:
-    url: https://deployment.d4g.tinker.ovh
+    url: https://deployment.services.dataforgood.fr
     accounts.admin.enabled: "true"
 
   rbacConfig:
