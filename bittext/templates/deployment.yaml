@@ -15,22 +15,6 @@ spec:
         app: bittext
     spec:
       containers:
-        - name: bittext-nginx
-          image: nginx:1-alpine
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 80
-          volumeMounts:
-            - mountPath: /etc/nginx/conf.d
-              readOnly: true
-              name: nginx-conf
-          resources:
-            requests:
-              memory: 32M
-              cpu: 150m
-            limits:
-              memory: 32M
-              cpu: 150m
         - name: bittext-app
           image: ghcr.io/quickpipes/bittext:latest
           imagePullPolicy: Always
@@ -66,10 +50,3 @@ spec:
               port: 5000
             initialDelaySeconds: 5
             periodSeconds: 5
-      volumes:
-        - name: nginx-conf
-          configMap:
-            name: nginx-conf # place ConfigMap `nginx-conf` on /etc/nginx
-            items:
-              - key: default.conf
-                path: default.conf
