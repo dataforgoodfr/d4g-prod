@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: hello
+  name: Bloom
   # You'll usually want to add your resources to the argocd namespace.
   namespace: argocd
   # Add a this finalizer ONLY if you want these to cascade delete.
@@ -13,9 +13,9 @@ spec:
 
   # Source of the application manifests
   source:
-    repoURL: https://github.com/quickpipes/d4g-prod
+    repoURL: https://github.com/dataforgoodfr/d4g-prod
     targetRevision: HEAD
-    path: hello
+    path: app/bloom
 
     # helm specific config
     helm:
@@ -29,7 +29,7 @@ spec:
   # Destination cluster and namespace to deploy the application
   destination:
     server: https://kubernetes.default.svc
-    namespace: hello
+    namespace: bloom
 
   # Sync policy
   syncPolicy:
