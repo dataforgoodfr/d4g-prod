@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bittext-deployment
+  labels:
+    app: bittext
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bittext
+  template:
+    metadata:
+      labels:
+        app: bittext
+    spec:
+      containers:
+        - name: bittext-app
+          image: ghcr.io/quickpipes/bittext:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: "BUCKET_NAME"
+              value: "bittext-s3"
+            - name: "REGION"
+              value: "fr-par"
+            - name: "S3_ENDPOINT_URL"
+              value: "https://s3.fr-par.scw.cloud"
+            - name: ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: bittext
+                  key: secret_key_id
+            - name: ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bittext
+                  key: secret_key
+          resources:
+            requests:
+              memory: 128M
+              cpu: 250m
+            limits:
+              memory: 128M
+              cpu: 250m
+          readinessProbe:
+            httpGet:
+              path: /up
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
